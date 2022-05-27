@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from sqlmodel import Session
+from sqlmodel import Session, select
 from sqlmodel_learning.db import SQLModel, engine
 from sqlmodel_learning.models.hero import Hero
 
@@ -62,9 +62,19 @@ def create_heroes():
     """
 
 
+def select_heroes():
+    with Session(engine) as session:
+        heroes = session.exec(select(Hero)).all()
+        print(heroes)
+
+        # for hero in results:
+        #    print(hero)
+
+
 def main():
     create_db_and_tables()
-    create_heroes()
+    # create_heroes()
+    select_heroes()
 
 
 if __name__ == "__main__":
