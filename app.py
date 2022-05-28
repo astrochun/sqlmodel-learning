@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session, select
 from sqlmodel_learning.db import SQLModel, engine
 from sqlmodel_learning.models.hero import Hero
@@ -26,11 +27,12 @@ def create_heroes():
 
     with Session(engine) as session:
         for h in heroes:
-            if not (record := select_hero(h.name)):
+            try:
+                record = select_hero(h.name)
+                print(f"Record exists: {record}!")
+            except NoResultFound:
+                print(f"Adding: {h}")
                 session.add(h)
-            else:
-                for r in record:
-                    print(f"Record exists: {r}!")
 
         """
         print("After adding to the session")
@@ -75,11 +77,11 @@ def create_heroes():
     """
 
 
-def select_hero(name: str) -> list[Hero] | None:
+def select_hero(name: str) -> Hero | None:
     with Session(engine) as session:
         hero = session.exec(select(Hero).where(Hero.name == name))
         if hero:
-            return hero.all()
+            return hero.one()
 
 
 def main():
