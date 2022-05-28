@@ -25,3 +25,6 @@ jobs:
     - name: Install sqlmodel_learning
       run: |
         pip install .[test]
+    - name: Run tests
+      run: |
+        coverage run && coverage report

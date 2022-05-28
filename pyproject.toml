@@ -9,3 +9,22 @@ target-version = ['py310']
 [tool.isort]
 profile = "black"
 known_third_party = ["sqlmodel", "sqlmodel_learning"]
+
+[tool.pytest.ini_options]
+addopts = "-sv"
+testpaths = [
+    "tests",
+]
+log_cli = true
+
+[tool.coverage.run]
+branch = true
+command_line = "-m pytest"
+source = [
+    "sqlmodel_learning"
+]
+relative_files = true
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
